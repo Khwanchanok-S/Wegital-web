@@ -4,11 +4,17 @@ import { useParams, Link } from 'react-router-dom';
 import axios from '../config/axios';
 
 import LineChart from '../components/LineChart';
+import UserEdit from '../features/user/UserEdit';
+import DeleteData from '../features/user/DeleteData';
 
 export default function DataPage() {
   const { logout, authenticatedUser } = useAuth();
   const { userId } = useParams();
   const [dataShow, setdataShow] = useState([]);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [isUpdateData, setIsUpdateData] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const [userData, setUserData] = useState({
     labels: [],
     datasets: [
@@ -29,32 +35,37 @@ export default function DataPage() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/datas/${userId}`);
-        // console.log(response);
-        const dataUser = response.data.data;
-
-        setdataShow(dataUser);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchData();
-  }, [userId]);
+    setIsUpdateData(false);
+  }, [isUpdateData]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`/datas/${userId}`);
+      // console.log(response);
+      const dataUser = response.data.data;
+
+      setdataShow(dataUser);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     setUserData(prevState => ({
-      ...prevState,
-      labels: dataShow.map(data => data.date),
+      labels: dataShow ? dataShow.map(data => data.date) : [],
       datasets: [
         {
-          ...prevState.datasets[0],
-          data: dataShow.map(data => data.weight),
+          label: 'Weight',
+          data: dataShow ? dataShow.map(data => data.weight) : [],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1,
         },
       ],
     }));
   }, [dataShow]);
+
   return (
     <>
       <div className="px-4 py-4">
@@ -151,37 +162,62 @@ export default function DataPage() {
                   <th scope="col" class="px-6 py-3">
                     วันที่
                   </th>
+                  <th scope="col" class="px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody>
-                {dataShow.map(el => {
-                  return (
-                    <>
-                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="w-4 p-4">
-                          <div class="flex items-center w-full"> </div>
-                        </td>
-                        <th
-                          scope="row"
-                          class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          <div class="pl-3">
-                            <div class="text-base font-semibold">
-                              {el.User.userName}
+                {dataShow &&
+                  dataShow.map(el => {
+                    return (
+                      <>
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                          <td class="w-4 p-4">
+                            <div class="flex items-center w-full"> </div>
+                          </td>
+                          <th
+                            scope="row"
+                            class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                          >
+                            <div class="pl-3">
+                              <div class="text-base font-semibold">
+                                {el.User.userName}
+                              </div>
+                              <div class="font-normal text-gray-500">
+                                {el.User.firstName} {el.User.lastName}
+                              </div>
                             </div>
-                            <div class="font-normal text-gray-500">
-                              {el.User.firstName} {el.User.lastName}
-                            </div>
-                          </div>
-                        </th>
-                        <td class="px-6 py-4">{el.height}</td>
-                        <td class="px-6 py-4">{el.weight}</td>
-                        <td class="px-6 py-4">{el.wasit}</td>
-                        <td class="px-6 py-4">{el.date}</td>
-                      </tr>
-                    </>
-                  );
-                })}
+                          </th>
+                          <td class="px-6 py-4">{el.height}</td>
+                          <td class="px-6 py-4">{el.weight}</td>
+                          <td class="px-6 py-4">{el.wasit}</td>
+                          <td class="px-6 py-4">{el.date}</td>
+
+                          <td class="px-6 py-4">
+                            <UserEdit
+                              openEdit={openEdit}
+                              setOpenEdit={setOpenEdit}
+                              dataShow={dataShow}
+                              setdataShow={setdataShow}
+                              height={el?.height}
+                              weight={el?.weight}
+                              wasit={el?.wasit}
+                              date={el?.date}
+                              dataId={el?.id}
+                              isUpdateData={isUpdateData}
+                              setIsUpdateData={setIsUpdateData}
+                            />
+
+                            <DeleteData
+                              openDelete={openDelete}
+                              setOpenDelete={setOpenDelete}
+                              dataId={el?.id}
+                              setIsUpdateData={setIsUpdateData}
+                            />
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
