@@ -100,7 +100,7 @@ export default function CreateUserForm({ onClose, setIsUpdateUser }) {
                 for="idcardNumber"
                 className="block  text-sm font-medium text-gray-900 dark:text-white "
               >
-                เลขบัตรประาชน
+                เลขบัตรประชาชน
               </label>
               <Input
                 name="idcardNumber"
