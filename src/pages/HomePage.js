@@ -88,6 +88,7 @@ export default function HomePage() {
                   class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value={searchValue}
                   onChange={handleInputChange}
+                  placeholder="Search by Username"
                 />
                 {searchValue !== '' && userShow.length !== 0 && showSearch && (
                   <div>
@@ -136,6 +137,9 @@ export default function HomePage() {
                   เลขบัตรประชาชน
                 </th>
                 <th scope="col" class="px-6 py-3">
+                  Username
+                </th>
+                <th scope="col" class="px-6 py-3">
                   Action
                 </th>
               </tr>
@@ -153,19 +157,31 @@ export default function HomePage() {
                         >
                           {el.firstName}
                         </td>
-                        <td class="px-4 py-4">{el.lastName}</td>
-                        <td class="px-4 py-4">{el.mobile}</td>
-                        <td class="px-6 py-4">{el.idcardNumber}</td>
-                        <td class="px-6 py-4">
-                          {/* <Link to={`/edit/${el.id}`}> */}
-                          {/* <button
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline w-20 bg-blue-200 round rounded"
-                          onClick={() => handleEditData(el?.id)}
+                        <td
+                          class="px-4 py-4"
+                          onClick={() => navigate(`/data/${el.id}`)}
                         >
-                          Edit
-                        </button> */}
-                          {/* </Link> */}
-
+                          {el.lastName}
+                        </td>
+                        <td
+                          class="px-4 py-4"
+                          onClick={() => navigate(`/data/${el.id}`)}
+                        >
+                          {el.mobile}
+                        </td>
+                        <td
+                          class="px-6 py-4"
+                          onClick={() => navigate(`/data/${el.id}`)}
+                        >
+                          {el.idcardNumber}
+                        </td>
+                        <td
+                          class="px-6 py-4"
+                          onClick={() => navigate(`/data/${el.id}`)}
+                        >
+                          {el.userName}
+                        </td>
+                        <td class="px-6 py-4">
                           <EditPage
                             openEdit={openEdit}
                             setOpenEdit={setOpenEdit}
@@ -179,12 +195,7 @@ export default function HomePage() {
                             isUpdateUser={isUpdateUser}
                             setIsUpdateUser={setIsUpdateUser}
                           />
-                          {/* <button
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline w-20 bg-red-400 round rounded"
-                            onClick={() => handleDeleteUser(el?.id)}
-                          >
-                            Delete
-                          </button> */}
+
                           <DeleteUser
                             openDelete={openDelete}
                             setOpenDelete={setOpenDelete}

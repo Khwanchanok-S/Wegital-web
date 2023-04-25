@@ -13,16 +13,6 @@ export default function LoginPage() {
           </h2>
           <LoginForm />
         </div>
-        {/* <div className="flex justify-center ">
-          <div
-            role={'button'}
-            className="font-medium text-indigo-600 hover:text-indigo-500 "
-            // onClick={() => setIsShow(true)}
-          >
-            Create New accout
-          </div>
-        </div> */}
-        {/* <Registercontanier isShow={isShow} setIsShow={setIsShow} /> */}
       </div>
     </>
   );

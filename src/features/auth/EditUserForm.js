@@ -44,9 +44,9 @@ export default function EditUserForm({
 
       setUserShow(data.event);
       setIsUpdateUser(true);
-      toast.success('Update user information successfully');
+      toast.success('เเก้ไขข้อมูลผู้ใช้งานสำเร็จ');
     } catch (err) {
-      toast.error('Failed to update user information');
+      toast.error('เเก้ไขข้อมูลผู้ใช้งานไม่สำเร็จ');
     } finally {
       onClose();
     }
@@ -125,7 +125,7 @@ export default function EditUserForm({
               <div className="py-8 space-x-2 flex justify-center">
                 <button
                   type="submit"
-                  className=" border-none rounded text-white bg-black  w-40"
+                  className=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring--800 "
                 >
                   ยืนยัน
                 </button>

@@ -24,19 +24,19 @@ export default function CreateUserForm({ onClose, setIsUpdateUser }) {
     try {
       e.preventDefault();
       const result = validateRegister(input);
+
       if (result) {
         setError(result);
       } else {
         console.log('no error');
         setError({});
         await authApi.register(input);
-
+        console.log('after');
         setInput(initialInput);
         onClose();
-        toast.success('successfully registered');
-
-        setIsUpdateUser(true);
+        toast.success('เพิ่มบัญชีผู้ใช้งานสำเร็จ');
       }
+      setIsUpdateUser(true);
     } catch (err) {
       toast.error(err.response?.data.message);
     }
@@ -149,9 +149,9 @@ export default function CreateUserForm({ onClose, setIsUpdateUser }) {
             <div className="py-8 space-x-2 flex justify-center">
               <button
                 type="submit"
-                className=" border-none rounded text-white bg-black  w-40"
+                className=" text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-800"
               >
-                สร้าง
+                ยืนยัน
               </button>
             </div>
           </div>

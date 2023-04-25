@@ -132,7 +132,7 @@ export default function FormPage() {
                   <div className="py-8 space-x-2 flex justify-center">
                     <button
                       type="submit"
-                      class="text-white bg-gradient-to-r from-green-700 via-green-600 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                      class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring--800"
                     >
                       ยืนยัน
                     </button>

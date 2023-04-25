@@ -42,9 +42,9 @@ export default function UserEditForm({
       console.log('after');
       setdataShow(data.event);
       setIsUpdateData(true);
-      toast.success('Update information successfully');
+      toast.success('เเก้ไขข้อมูลสำเร็จ');
     } catch (err) {
-      toast.error('Failed to update information');
+      toast.error('เเก้ไขข้อมูลไม่สำเร็จ');
     } finally {
       onClose();
     }
