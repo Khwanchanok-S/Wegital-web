@@ -191,7 +191,7 @@ export default function DataPage() {
                           <td class="px-6 py-4">{el.weight}</td>
                           <td class="px-6 py-4">{el.wasit}</td>
                           <td class="px-6 py-4">{el.date}</td>
-
+                          {/* {authenticatedUser?.role === '' && ( */}
                           <td class="px-6 py-4">
                             <UserEdit
                               openEdit={openEdit}
@@ -214,6 +214,7 @@ export default function DataPage() {
                               setIsUpdateData={setIsUpdateData}
                             />
                           </td>
+                          {/* )} */}
                         </tr>
                       </>
                     );
