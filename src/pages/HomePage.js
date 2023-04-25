@@ -1,14 +1,16 @@
 import React from 'react';
 import axios from '../config/axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import EditPage from './EditPage';
 import CreateUserPage from './CreateUserPage';
 import useAuth from '../hook/useAuth';
+import DeleteUser from '../features/auth/DeleteUser';
 
 export default function HomePage() {
-  const { logout, authenticatedUser } = useAuth();
+  const { logout } = useAuth();
   const [userShow, setUserShow] = useState([]);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const [openEdit, setOpenEdit] = useState(false);
   const [isUpdateUser, setIsUpdateUser] = useState(false);
@@ -31,14 +33,14 @@ export default function HomePage() {
     }
   };
 
-  const handleDeleteUser = async userId => {
-    try {
-      await axios.delete(`/users/${userId}`);
-      fetchUsers();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleDeleteUser = async userId => {
+  //   try {
+  //     await axios.delete(`/users/${userId}`);
+  //     fetchUsers();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
@@ -119,11 +121,13 @@ export default function HomePage() {
                   return (
                     <>
                       {/* <Link to={`/data/${el.id}`}> */}
-                      <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        onClick={() => navigate(`/data/${el.id}`)}
-                      >
-                        <td class="pl-40 px-1 p-10">{el.firstName}</td>
+                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td
+                          class="pl-40 px-1 p-10 w-60"
+                          onClick={() => navigate(`/data/${el.id}`)}
+                        >
+                          {el.firstName}
+                        </td>
                         <td class="px-4 py-4">{el.lastName}</td>
                         <td class="px-4 py-4">{el.mobile}</td>
                         <td class="px-6 py-4">{el.idcardNumber}</td>
@@ -150,12 +154,18 @@ export default function HomePage() {
                             isUpdateUser={isUpdateUser}
                             setIsUpdateUser={setIsUpdateUser}
                           />
-                          <button
+                          {/* <button
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline w-20 bg-red-400 round rounded"
                             onClick={() => handleDeleteUser(el?.id)}
                           >
                             Delete
-                          </button>
+                          </button> */}
+                          <DeleteUser
+                            openDelete={openDelete}
+                            setOpenDelete={setOpenDelete}
+                            userId={el?.id}
+                            setIsUpdateUser={setIsUpdateUser}
+                          />
                         </td>
                       </tr>
                       {/* </Link> */}

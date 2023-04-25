@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as dataApi from '../apis/data-api';
 import useAuth from '../hook/useAuth';
@@ -42,16 +42,12 @@ export default function FormPage() {
     <>
       <div className="py-4 px-8">
         <div className="flex justify-end">
-          {/* {authenticatedUser.role === 'admin' ? ( */}
-
           <button
-            className=" border-none rounded  bg-zinc-400 w-40"
+            class="text-white bg-gradient-to-br w-40 from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             onClick={() => navigate(`/data/${authenticatedUser.id}`)}
           >
             ตารางข้อมูล
           </button>
-
-          {/* ) : null} */}
         </div>
 
         <div className="w-full h-full py-20 px-80">
@@ -68,7 +64,7 @@ export default function FormPage() {
                       for="height"
                       className="block  text-sm font-medium text-gray-900 dark:text-white "
                     >
-                      ความสูง
+                      ความสูง หน่วย เซนติเมตร
                     </label>
                     <input
                       name="height"
@@ -86,7 +82,7 @@ export default function FormPage() {
                       for="weight"
                       className="block  text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      น้ำหนัก
+                      น้ำหนัก หน่วย กิโลกรัม
                     </label>
                     <input
                       name="weight"
@@ -104,7 +100,7 @@ export default function FormPage() {
                       for="wasit"
                       className="block  text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      รอบเอว
+                      รอบเอว หน่วย เซนติเมตร
                     </label>
                     <input
                       name="wasit"
@@ -136,7 +132,7 @@ export default function FormPage() {
                   <div className="py-8 space-x-2 flex justify-center">
                     <button
                       type="submit"
-                      className=" border-none rounded text-white bg-black  w-40"
+                      class="text-white bg-gradient-to-r from-green-700 via-green-600 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                     >
                       ยืนยัน
                     </button>

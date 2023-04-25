@@ -17,15 +17,15 @@ export default function Modal({
       >
         {/* card */}
         <div
-          className="relative rounded-lg p-2 w-3/4 top-10 mx-auto bg-[#FFFFFF] mb-[15vh]"
+          className="relative rounded-lg p-2  w-[50%] top-10 mx-auto bg-[#FFFFFF] mb-[15vh]"
           onMouseDown={e => (!alwaysOpen ? e.stopPropagation() : {})}
         >
           <div className="rounded-lg">
-            <div className="flex flex-col items-center space-y-4 md:space-y-6 sm:p-8"></div>
-            <div className={`${titleSize} py-2 font-bold text-center`}>
+            <div className=" flex flex-col items-center space-y-4 md:space-y-4 sm:p-8"></div>
+            <div className={`${titleSize} py-2 font-bold text-center `}>
               {title}
             </div>
-            {/* <VerticalSpace /> */}
+
             {children}
           </div>
         </div>

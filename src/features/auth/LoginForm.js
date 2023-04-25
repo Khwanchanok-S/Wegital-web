@@ -9,7 +9,6 @@ export default function LoginForm() {
   const [input, setInput] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState({});
-  const { userId } = useParams();
 
   const handleChangeInput = e => {
     setInput({ ...input, [e.target.name]: e.target.value });

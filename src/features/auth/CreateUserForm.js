@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import * as authApi from '../../apis/auth-api';
+import validateRegister from '../../validate/validate-register';
+import Input from '../../components/Input';
 import { toast } from 'react-toastify';
 const initialInput = {
   firstName: '',
@@ -21,125 +23,140 @@ export default function CreateUserForm({ onClose, setIsUpdateUser }) {
   const handleSubmitForm = async e => {
     try {
       e.preventDefault();
-      await authApi.register(input);
-      console.log('after api');
-      setInput(initialInput);
-      onClose();
-      toast.success('successfully registered');
+      const result = validateRegister(input);
+      if (result) {
+        setError(result);
+      } else {
+        console.log('no error');
+        setError({});
+        await authApi.register(input);
 
-      setIsUpdateUser(true);
+        setInput(initialInput);
+        onClose();
+        toast.success('successfully registered');
+
+        setIsUpdateUser(true);
+      }
     } catch (err) {
       toast.error(err.response?.data.message);
     }
   };
 
   return (
-    <div className="w-full px-48 py-6">
-      <form onSubmit={handleSubmitForm}>
-        <div>
-          <div className="mb-6">
-            <label
-              for="firstName"
-              className="block  text-sm font-medium text-gray-900 dark:text-white "
-            >
-              Firstname
-            </label>
-            <input
-              name="firstName"
-              value={input.firstName}
-              onChange={handleChangeInput}
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
+    <div className="flex justify-center w-[100%]">
+      <div className="w-[70%]">
+        <form onSubmit={handleSubmitForm}>
+          <div>
+            <div className="mb-6">
+              <label
+                for="firstName"
+                className="block  text-sm font-medium text-gray-900 dark:text-white "
+              >
+                ชื่อ
+              </label>
+              <Input
+                name="firstName"
+                value={input.firstName}
+                onChange={handleChangeInput}
+                error={error.firstName}
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="lastName"
+                className="block  text-sm font-medium text-gray-900 dark:text-white "
+              >
+                นามสกุล
+              </label>
+              <Input
+                name="lastName"
+                value={input.lastName}
+                onChange={handleChangeInput}
+                error={error.lastName}
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="mobile"
+                className="block  text-sm font-medium text-gray-900 dark:text-white "
+              >
+                เบอร์
+              </label>
+              <Input
+                name="mobile"
+                value={input.mobile}
+                error={error.mobile}
+                onChange={handleChangeInput}
+                type="number"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="idcardNumber"
+                className="block  text-sm font-medium text-gray-900 dark:text-white "
+              >
+                เลขบัตรประาชน
+              </label>
+              <Input
+                name="idcardNumber"
+                value={input.idcardNumber}
+                onChange={handleChangeInput}
+                error={error.idcardNumber}
+                type="number"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="userName"
+                className="block  text-sm font-medium text-gray-900 dark:text-white "
+              >
+                Username
+              </label>
+              <Input
+                name="userName"
+                value={input.userName}
+                onChange={handleChangeInput}
+                error={error.userName}
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                for="password"
+                className="block  text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Password
+              </label>
+              <Input
+                name="password"
+                value={input.password}
+                error={error.password}
+                onChange={handleChangeInput}
+                type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </div>
           </div>
-          <div className="mb-6">
-            <label
-              for="lastName"
-              className="block  text-sm font-medium text-gray-900 dark:text-white "
-            >
-              Lastname
-            </label>
-            <input
-              name="lastName"
-              value={input.lastName}
-              onChange={handleChangeInput}
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              for="mobile"
-              className="block  text-sm font-medium text-gray-900 dark:text-white "
-            >
-              Mobile
-            </label>
-            <input
-              name="mobile"
-              value={input.mobile}
-              onChange={handleChangeInput}
-              type="number"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              for="idcardNumber"
-              className="block  text-sm font-medium text-gray-900 dark:text-white "
-            >
-              Id card Number
-            </label>
-            <input
-              name="idcardNumber"
-              value={input.idcardNumber}
-              onChange={handleChangeInput}
-              type="number"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              for="userName"
-              className="block  text-sm font-medium text-gray-900 dark:text-white "
-            >
-              Username
-            </label>
-            <input
-              name="userName"
-              value={input.userName}
-              onChange={handleChangeInput}
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              for="password"
-              className="block  text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Password
-            </label>
-            <input
-              name="password"
-              value={input.password}
-              onChange={handleChangeInput}
-              type="text"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
-          </div>
-        </div>
 
-        <div>
-          <div className="py-8 space-x-2 flex justify-center">
-            <button
-              type="submit"
-              className=" border-none rounded text-white bg-black  w-40"
-            >
-              สร้าง
-            </button>
+          <div>
+            <div className="py-8 space-x-2 flex justify-center">
+              <button
+                type="submit"
+                className=" border-none rounded text-white bg-black  w-40"
+              >
+                สร้าง
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

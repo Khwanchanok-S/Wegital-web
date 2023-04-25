@@ -3,11 +3,30 @@ import useAuth from '../hook/useAuth';
 import { useParams, Link } from 'react-router-dom';
 import axios from '../config/axios';
 
-export default function DataPage() {
-  const { logout } = useAuth();
-  const [dataShow, setdataShow] = useState([]);
+import LineChart from '../components/LineChart';
 
+export default function DataPage() {
+  const { logout, authenticatedUser } = useAuth();
   const { userId } = useParams();
+  const [dataShow, setdataShow] = useState([]);
+  const [userData, setUserData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'น้ำหนัก ต่อ วัน',
+        data: [],
+        backgroundColor: [
+          'rgba(75,192,192,1)',
+          '#ecf0f1',
+          '#50AF95',
+          '#f3ba2f',
+          '#2a71d0',
+        ],
+        borderColor: 'black',
+        borderWidth: 2,
+      },
+    ],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +42,19 @@ export default function DataPage() {
     };
     fetchData();
   }, [userId]);
+
+  useEffect(() => {
+    setUserData(prevState => ({
+      ...prevState,
+      labels: dataShow.map(data => data.date),
+      datasets: [
+        {
+          ...prevState.datasets[0],
+          data: dataShow.map(data => data.weight),
+        },
+      ],
+    }));
+  }, [dataShow]);
   return (
     <>
       <div className="px-4 py-4">
@@ -66,6 +98,15 @@ export default function DataPage() {
                   </button>
                 </Link>
               </div>
+              {authenticatedUser?.role === 'admin' && (
+                <Link to="/">
+                  <div>
+                    <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                      ตารางข้อมูลของผู้ใช้งานทั้งหมด
+                    </button>
+                  </div>
+                </Link>
+              )}
               <div className="">
                 <div className="flex justify-end">
                   <button
@@ -79,58 +120,71 @@ export default function DataPage() {
               </div>
             </div>
           </div>
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" class="p-4"></th>
-                <th scope="col" class="px-6 py-3">
-                  User
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  ความสูง
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  น้ำหนัก
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  รอบเอว
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  วันที่
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataShow.map(el => {
-                return (
-                  <>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                      <td class="w-4 p-4">
-                        <div class="flex items-center"></div>
-                      </td>
-                      <th
-                        scope="row"
-                        class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        <div class="pl-3">
-                          <div class="text-base font-semibold"></div>
-                          <div class="font-normal text-gray-500">
-                            {el.User.firstName} {el.User.lastName}
+          <div>
+            <div className="w-full h-full">
+              <div className="flex justify-center">
+                <div className="w-96">
+                  <LineChart chartData={userData} />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="p-4">
+                    {' '}
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Username
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    ความสูง
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    น้ำหนัก
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    รอบเอว
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    วันที่
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataShow.map(el => {
+                  return (
+                    <>
+                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="w-4 p-4">
+                          <div class="flex items-center w-full"> </div>
+                        </td>
+                        <th
+                          scope="row"
+                          class="flex items-center px-4 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          <div class="pl-3">
+                            <div class="text-base font-semibold">
+                              {el.User.userName}
+                            </div>
+                            <div class="font-normal text-gray-500">
+                              {el.User.firstName} {el.User.lastName}
+                            </div>
                           </div>
-                        </div>
-                      </th>
-                      <td class="px-6 py-4">{el.height}</td>
-                      <td class="px-6 py-4">
-                        <div class="flex items-center">{el.weight}</div>
-                      </td>
-                      <td class="px-6 py-4">{el.wasit}</td>
-                      <td class="px-6 py-4">{el.date}</td>
-                    </tr>
-                  </>
-                );
-              })}
-            </tbody>
-          </table>
+                        </th>
+                        <td class="px-6 py-4">{el.height}</td>
+                        <td class="px-6 py-4">{el.weight}</td>
+                        <td class="px-6 py-4">{el.wasit}</td>
+                        <td class="px-6 py-4">{el.date}</td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
